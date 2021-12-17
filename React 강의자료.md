@@ -133,3 +133,9 @@ ReactDOM.render(<Container />, root)
 
 
 
+
+
+
+
+## 2. STATE
+
