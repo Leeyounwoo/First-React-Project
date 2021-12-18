@@ -139,3 +139,96 @@ ReactDOM.render(<Container />, root)
 
 ## 2. STATE
 
+#### 1) Understanding State
+
+##### (1) state: 기본적으로 데이터가 저장되는 곳.
+
+##### (2) 변수를 JSX로 전달하는 방법
+
+```react
+let counter = 0;
+const Container = () => (
+ <h3>Total clicks: {counter}</h3>
+)
+```
+
+##### (3) 값이 바뀔때마다 UI를 업데이트하고 싶으면 리렌더링을 해줘야 함.
+
+```react
+let counter = 0;
+function countUp() {
+  counter = counter + 1;
+  // 데이터를 업데이트할 때마다 리렌더링을 해줘야 한다.
+  render();
+}
+function render() {
+  ReactDOM.render(<Container />, root);
+}
+const Container = () => (
+  <div>
+    <h3>Total clicks: {counter}</h3>
+    <button onClick={countUp}>Click me</button>
+  </div>
+);
+render();
+```
+
+##### (4) React.js의 장점
+
+바닐라 JS																					React.JS
+
+![image-20211218204721987](React 강의자료.assets/image-20211218204721987-16398335558622.png)
+
+React.js는 새로 렌더링하더라도 전체를 전부 재생성할 필요 없이 바뀐 부분만 새로 생성할 수 있게 해준다.
+
+이전에 렌더링된 컴포넌트는 어떤거였는지 확인하고 다음에 렌더링될 컴포넌트는 어떤지 보고 React.js는 다른 부분만 파악한다. 같은 부분은 다시 생성하지 않고 오로지 바뀐 부분만 업데이트해준다. 
+
+이를 통해 아주 Interactive한 어플을 만들 수 있음.
+
+
+
+
+
+#### 2) setState
+
+```react
+function App() {
+  const [counter, setCounter] = React.useState(0);
+  const onClick = () => {
+    setCounter(counter + 1);
+  };
+  return (
+    <div>
+      <h3>Total clicks: {counter}</h3>
+      <button onClick={onClick}>Click me</button>
+    </div>
+  );
+}
+```
+
+##### (1) React.useState()
+
+React.js 어플 내에서 데이터를 보관하고 자동으로 리렌더링을 해주는 방법
+
+```react
+const [counter, setCounter] = React.useState(0);
+```
+
+![image-20211218212851387](React 강의자료.assets/image-20211218212851387.png)
+
+- 첫번째 요소: 우리가 담으려는 data 값
+- 두 번째 요소: 이 data 값을 바꿀 때 사용할 modifier(자동으로 리렌더링해준다.)
+
+
+
+##### (2) 배열에서 요소들을 꺼내서 이름 부여하는 JavaScript 문법
+
+```javascript
+const x = [1, 2, 3];
+const [a, b, c] = x;
+```
+
+
+
+** modifier 함수를 이용해서 컴포넌트의 state를 바꿀 때 컴포넌트는 **새로운 값을 가지고 다시 한 번 렌더링되는 것임!! **
+
