@@ -139,51 +139,51 @@ ReactDOM.render(<Container />, root)
 
 ## 2. STATE
 
-#### 1) Understanding State
+#### 1) 기본
 
-##### (1) state: 기본적으로 데이터가 저장되는 곳.
+- state: 기본적으로 데이터가 저장되는 곳.
 
-##### (2) 변수를 JSX로 전달하는 방법
+- 변수를 JSX로 전달하는 방법
 
-```react
-let counter = 0;
-const Container = () => (
- <h3>Total clicks: {counter}</h3>
-)
-```
+  ```react
+  let counter = 0;
+  const Container = () => (
+   <h3>Total clicks: {counter}</h3>
+  )
+  ```
 
-##### (3) 값이 바뀔때마다 UI를 업데이트하고 싶으면 리렌더링을 해줘야 함.
+- 값이 바뀔때마다 UI를 업데이트하고 싶으면 리렌더링을 해줘야 함.
 
-```react
-let counter = 0;
-function countUp() {
-  counter = counter + 1;
-  // 데이터를 업데이트할 때마다 리렌더링을 해줘야 한다.
+  ```react
+  let counter = 0;
+  function countUp() {
+    counter = counter + 1;
+    // 데이터를 업데이트할 때마다 리렌더링을 해줘야 한다.
+    render();
+  }
+  function render() {
+    ReactDOM.render(<Container />, root);
+  }
+  const Container = () => (
+    <div>
+      <h3>Total clicks: {counter}</h3>
+      <button onClick={countUp}>Click me</button>
+    </div>
+  );
   render();
-}
-function render() {
-  ReactDOM.render(<Container />, root);
-}
-const Container = () => (
-  <div>
-    <h3>Total clicks: {counter}</h3>
-    <button onClick={countUp}>Click me</button>
-  </div>
-);
-render();
-```
+  ```
 
-##### (4) React.js의 장점
+- React.js의 장점
 
-바닐라 JS																					React.JS
+  ​	바닐라 JS																					React.JS
 
-![image-20211218204721987](React 강의자료.assets/image-20211218204721987-16398335558622.png)
+  ![image-20211218204721987](React 강의자료.assets/image-20211218204721987-16398335558622.png)
 
-React.js는 새로 렌더링하더라도 전체를 전부 재생성할 필요 없이 바뀐 부분만 새로 생성할 수 있게 해준다.
+​		React.js는 새로 렌더링하더라도 전체를 전부 재생성할 필요 없이 바뀐 부분만 새로 생성할 수 있게 해준다.
 
-이전에 렌더링된 컴포넌트는 어떤거였는지 확인하고 다음에 렌더링될 컴포넌트는 어떤지 보고 React.js는 다른 부분만 파악한다. 같은 부분은 다시 생성하지 않고 오로지 바뀐 부분만 업데이트해준다. 
+​		이전에 렌더링된 컴포넌트는 어떤거였는지 확인하고 다음에 렌더링될 컴포넌트는 어떤지 보고 React.js는 다		른 부분만 파악한다. 같은 부분은 다시 생성하지 않고 오로지 바뀐 부분만 업데이트해준다. 
 
-이를 통해 아주 Interactive한 어플을 만들 수 있음.
+​		이를 통해 아주 Interactive한 어플을 만들 수 있음.
 
 
 
@@ -206,29 +206,101 @@ function App() {
 }
 ```
 
-##### (1) React.useState()
+- React.useState()
 
-React.js 어플 내에서 데이터를 보관하고 자동으로 리렌더링을 해주는 방법
+  React.js 어플 내에서 데이터를 보관하고 자동으로 리렌더링을 해주는 방법
 
-```react
-const [counter, setCounter] = React.useState(0);
-```
+  ```react
+  const [counter, setCounter] = React.useState(0);
+  ```
 
 ![image-20211218212851387](React 강의자료.assets/image-20211218212851387.png)
 
-- 첫번째 요소: 우리가 담으려는 data 값
-- 두 번째 요소: 이 data 값을 바꿀 때 사용할 modifier(자동으로 리렌더링해준다.)
+​		첫번째 요소: 우리가 담으려는 data 값
+
+​		두 번째 요소: 이 data 값을 바꿀 때 사용할 modifier(자동으로 리렌더링해준다.)
+
+- 배열에서 요소들을 꺼내서 이름 부여하는 JavaScript 문법
+
+  ```react
+  const x = [1, 2, 3];
+  const [a, b, c] = x;
+  ```
+
+modifier 함수를 이용해서 컴포넌트의 state를 바꿀 때 컴포넌트는 **새로운 값을 가지고 ==다시 한 번 렌더링==되는 것임!! **
 
 
 
-##### (2) 배열에서 요소들을 꺼내서 이름 부여하는 JavaScript 문법
 
-```javascript
-const x = [1, 2, 3];
-const [a, b, c] = x;
+
+#### 3) Value와 State 연결
+
+```react
+const [minutes, setMinutes] = React.useState(0);
+const onChange = (event) => {
+  setMinutes(event.target.value);
+}
+
+<input
+  value = {minutes}
+  onChange={onChage}
+/>
 ```
 
+value와 이벤트리스너 둘 다 추가해야 함.
 
 
-** modifier 함수를 이용해서 컴포넌트의 state를 바꿀 때 컴포넌트는 **새로운 값을 가지고 다시 한 번 렌더링되는 것임!! **
 
+
+
+#### 4) label - input 태그
+
+```react
+<label for="minutes">Minutes</label>
+<input 
+  value={inverted ? amount * 60 : amount} 
+  id="minutes" 
+  placeholder="Minutes" 
+  type="number" 
+  onChange={onChange}
+  disabled={inverted}
+/>
+```
+
+> 1. label의 for와 input의 id를 값은 값을 넣어서 연결
+> 2. input에 value와 이벤트 리스너 
+
+
+
+
+
+#### 5) select - option
+
+```react
+<div>
+  <h1>Super Converter</h1>
+  <select value={index} onChange={onSelect}>
+    <option value="xx">Select your units</option>
+    <option value="0">Minutes & Hours</option>
+    <option value="1">Km & Miles</option>  
+  </select>
+  <hr />
+  {index === "xx" ? "Please select your units" : null}
+  {index === "0" ? <MinutesToHours /> : null}
+  {index === "1" ? <KmToMiles /> : null}
+</div>
+```
+
+> 1. select에 value와 이벤트 리스너
+>
+>    - onSelect 함수에서 index 값을 event.target.value로 바꿔줌
+>
+> 2. 각 option에서 value값 지정
+>
+> 3. if - else 문을 아래와 같이 사용
+>
+>    - {index === "0" ? <MinutesToHours /> : null} 
+>
+>      ==> index 값이 0 이면 MinutesToHours 컴포넌트 렌더링
+
+​			
