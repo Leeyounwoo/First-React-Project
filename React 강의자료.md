@@ -303,4 +303,175 @@ value와 이벤트리스너 둘 다 추가해야 함.
 >
 >      ==> index 값이 0 이면 MinutesToHours 컴포넌트 렌더링
 
-​			
+
+
+
+
+
+
+
+
+## 3. Props
+
+#### 1) Props
+
+- 부모 컴포넌트로부터 자식 컴포넌트에 데이터를 보낼 수 있게 해주는 방법
+
+- 예시, 한 회사에서 어플리케이션을 만들려고 함
+
+  - 다양한 버튼들이 필요 (로그인, 변경, 확인 등등...)
+  - 다양한 버튼이 있지만 버튼의 모습은 같음 ==> <span style="color:red">리액트 컴포넌트를 재사용하고 싶음</span>
+
+- 재사용하기 전의 코드
+
+  ```react
+  function SaveBtn(){
+    return <button style={{
+      fontSize: 18,
+    }}>Save Changes</button>
+  }
+  
+  function ConfirmBtn(){
+    return <button style={{
+      fontSize: 16,
+    }}>Confirm</button>
+  }
+  
+  function App(){
+    return (
+      <div>
+     	  <SaveBtn />
+        <ConfirmBtn />
+      </div>
+    )
+  }
+  ```
+
+- 재사용 코드
+
+  ```react
+  function Btn({text ,big}){
+    return <button style={{
+      fontSize: big ? 18 : 16,
+    }}>{text}</button>
+  }
+  
+  function App(){
+    return (
+      <div>
+        //   
+        <Btn text="Save Changes" big={true} />
+        <Btn text="Confirm" big={false} />
+      </div>
+    )
+  }
+  ```
+
+
+
+
+
+
+#### 2) Memo
+
+- 부모 컴포넌트가 리렌더링
+
+  ```react
+  function Btn({text, changeValue}){
+    return(
+      <button onClick={changeValue}>
+     	  {text}
+      </button>
+    );
+  }
+  
+  function App(){
+    const [value, setValue] = React.useState("Save Change");
+    const changeValue = () => setValue("Revert Changes")
+    return (
+      <div>
+        // 여기에 onClick해도 이벤트리스너가 아니라 props이름.
+     	  <Btn text={value} changeValue={changeValue} />
+        <Btn text="Continue" />
+      </div>
+    )
+  }
+  ```
+
+  - 버튼 클릭 ==> 부모 컴포넌트 state(상태) 변경
+  - 상태 변경 ==> 모든게 새로 렌더링
+  - 버튼 누르기 전
+
+  ![image-20220113101303192](React 강의자료.assets/image-20220113101303192.png)
+
+  
+
+  ![image-20220113101311783](React 강의자료.assets/image-20220113101311783.png)
+
+  - 버튼 누른 후
+
+  ![image-20220113101411861](React 강의자료.assets/image-20220113101411861.png)
+
+  ![image-20220113101419853](React 강의자료.assets/image-20220113101419853.png)
+
+- ==React Memo==
+
+  - Props가 변경되지 않으면 리렌더링하지 않게 해줌
+
+  ```react
+  function Btn({text, changeValue}){
+  }
+  
+  const MemorizedBtn = React.memo(Btn)
+  function App() {
+    return (
+      <div>
+        <MemorizedBtn />
+        <MemorizedBtn />
+      </div>
+    )
+  }
+  ```
+
+  ![image-20220113102212555](React 강의자료.assets/image-20220113102212555.png)
+
+![image-20220113102220216](React 강의자료.assets/image-20220113102220216.png)
+
+
+
+
+
+#### 3) Prop Types
+
+- React props는 어떤 타입의 prop이든 보내줄 수 있음
+- 문제는 잘못된 prop을 전달할 때도 리액트는 에러 메세지를 띄우지 않음
+- ==PropTypes==로 해결가능
+
+```react
+<script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+
+Btn.propTypes = {
+  text: PropTypes.string,
+  fontSize: PropTypes.number,
+}
+```
+
+- 공식 문서: https://ko.reactjs.org/docs/typechecking-with-proptypes.html
+
+- props 가 없을 때 기본값으로 설정하는 방법
+
+  ```react
+  function Btn({text, fontSize = 16}){
+  }
+  ```
+
+
+
+
+
+
+
+
+
+## 4. 
+
