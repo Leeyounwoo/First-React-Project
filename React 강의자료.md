@@ -574,3 +574,110 @@ Btn.propTypes = {
 
       create-react-app은 무작위 랜덤 클래스를 만듬
 
+
+
+
+
+
+
+
+
+## 5. EFFECTS
+
+#### 1) Introduction
+
+- 코드를 딱 한번만 실행하고, 다시는 실행하지 않는 방법에 대해 배울 예정
+
+- 컴포넌트의 state가 변화하면 다시 render 됨.
+
+- 특정 코드들은 첫번째 componet render에서만 실행되어야 함.
+
+  ex) API를 통해 데이터를 가져올 때 컴포넌트 렌더에서 API를 부르고 이후 상태가 변화할 때 그 API에서 데이터를 다시 가져오지 않게 만들 수 있다.
+
+
+
+
+
+#### 2) useEffect
+
+```react
+import {useEffect} from "react"
+
+function App() {
+  console.log("I run all the time")
+  useEffect(() => {
+    console.log("CALL THE API ...")
+  }, [])
+}
+```
+
+- 두개의 인자가 필요
+  - 첫 번째 인자: EffectCallback(한 번만 실행할 함수)
+  - 두 번째 인자: deps(변화를 감지할 state)
+
+
+
+
+
+#### 3) Deps
+
+- 특정 state의 변화를 감지하는 useEffect
+
+  ```react
+  import {useEffect} from "react"
+  
+  function App() {
+    useEffect(() => {
+      console.log("I run when 'keyword' changes")
+    }, [keyword])
+  }
+  ```
+
+- deps가 비어있는 배열인 경우, 변화를 감지할 state가 없기 때문에 처음 렌더링할 때 1번 실행
+
+- 조건을 넣을 수도 있고 여러 개의 state 변화를 감지할 수도 있음
+
+  ```react
+  useEffect(() => {
+    if (keyword !== "" && keyword.length > 5){
+      console.log("Search")
+    }
+  }, [keyword, counter])
+  ```
+
+  
+
+
+
+#### 4) Cleanup
+
+- 컴포넌트가 destroy될 때 뭔가를 할 수 있도록 해줌
+
+  - 컴포넌트가 없어질 때 어떤 분석 결과를 보내고 싶을 때
+
+  - effect함수에서 destroy될 때 실행할 함수를 return 해준다.
+
+  ```react
+  function Hello() {
+    useEffect(() => {
+      console.log("created :)");
+      return () => {
+        console.log("Destroyed! :(");
+      }
+    }, [])
+    return <h1>Hello</h1>;
+  }
+  ```
+
+
+
+
+
+
+
+
+
+
+
+
+
