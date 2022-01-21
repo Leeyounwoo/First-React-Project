@@ -1,25 +1,19 @@
-// import Button from "./Button";
-// import styles from './App.module.css'
-import { useState, useEffect } from "react"
-
-function Hello(){
-  useEffect(() => {
-    console.log("created :)");
-    return () => {
-      console.log("Destroyed! :(");
-    }
-  }, [])
-  return <h1>Hello</h1>;
-}
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Detail from './pages/Details';
 
 function App() {
-  const [showing, setShowing] = useState(false)
-  const onClick = () => setShowing(prev => !prev)
   return (
-    <div>
-      {showing ? <Hello /> : null}
-    <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/movie/:id">
+          <Detail />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
